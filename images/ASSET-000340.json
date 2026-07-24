@@ -1,0 +1,26 @@
+{
+  "asset_id": "ASSET-000340",
+  "canonical_master_drive_file_id": "1SsN4tIdSnnQw3ciHb6_MwHXqUJuS7fzp",
+  "source_mime_type": "image/jpeg",
+  "source_dimensions": {
+    "width": 2160,
+    "height": 3840
+  },
+  "public_dimensions": {
+    "width": 1200,
+    "height": 2133
+  },
+  "public_mime_type": "image/jpeg",
+  "public_path": "images/ASSET-000340.jpg",
+  "public_url": "https://cdn.jsdelivr.net/gh/Rauthin/media@main/images/ASSET-000340.jpg",
+  "approved_for": [
+    "website",
+    "instagram",
+    "facebook",
+    "google-business",
+    "email",
+    "whatsapp",
+    "press"
+  ],
+  "usage_restrictions": "Use as a Rauthin estate/Ridgebacks brand image. Do not imply the dogs are a guest amenity or available for interaction."
+}
