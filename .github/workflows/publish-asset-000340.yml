@@ -1,0 +1,112 @@
+name: Publish ASSET-000340
+
+on:
+  push:
+    branches:
+      - publish/asset-000340
+    paths:
+      - ".github/workflows/publish-asset-000340.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-asset-000340
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout publication branch
+        uses: actions/checkout@v4
+        with:
+          ref: publish/asset-000340
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow==11.3.0
+
+      - name: Download and verify master photograph
+        env:
+          SOURCE_URL: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-e6c0-81f4-bc0d-74eb88ea1393/raw?se=2026-07-24T18:16:05Z&sp=r&sv=2026-02-06&sr=b&scid=6685cc82-d3ff-5cf3-b362-ba01e4fd4df2&skoid=0a4a0f0c-99ac-4752-9d87-cfac036fa93f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-24T16:46:24Z&ske=2026-07-26T16:46:24Z&sks=b&skv=2026-02-06&sig=OeAqhhcfaqYTN1YfBzlYiAmAXWv2shh1pFAl0oT/zHM%3D"
+        run: |
+          set -euo pipefail
+          curl --location --fail --retry 3 --retry-delay 2 "$SOURCE_URL" --output /tmp/ASSET-000340-master.jpg
+          test "$(stat -c%s /tmp/ASSET-000340-master.jpg)" = "2930117"
+          echo "fbf4ac83eaad6bb3b46c73bb9bef74d16031e340ed2720ff09d1a204b204fdc4  /tmp/ASSET-000340-master.jpg" | sha256sum --check --strict
+
+      - name: Create public web derivative and manifest
+        run: |
+          set -euo pipefail
+          mkdir -p images
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          import json
+
+          source = Path('/tmp/ASSET-000340-master.jpg')
+          output = Path('images/ASSET-000340.jpg')
+          manifest = Path('images/ASSET-000340.json')
+
+          with Image.open(source) as opened:
+              image = ImageOps.exif_transpose(opened).convert('RGB')
+
+          if image.width != 2160 or image.height != 3840:
+              raise SystemExit(f'Unexpected oriented master dimensions: {image.size}')
+
+          target_width = 1200
+          target_height = round(image.height * target_width / image.width)
+          image = image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+          image.save(
+              output,
+              'JPEG',
+              quality=88,
+              optimize=True,
+              progressive=True,
+              subsampling='4:2:0',
+          )
+
+          data = output.read_bytes()
+          if data[:2] != b'\xff\xd8' or data[-2:] != b'\xff\xd9':
+              raise SystemExit('Generated file is not a complete JPEG')
+          if image.size != (1200, 2133):
+              raise SystemExit(f'Unexpected derivative dimensions: {image.size}')
+          if not (250_000 <= len(data) <= 1_500_000):
+              raise SystemExit(f'Unexpected derivative byte size: {len(data)}')
+
+          manifest.write_text(json.dumps({
+              'asset_id': 'ASSET-000340',
+              'canonical_master_drive_file_id': '1SsN4tIdSnnQw3ciHb6_MwHXqUJuS7fzp',
+              'source_mime_type': 'image/jpeg',
+              'source_dimensions': {'width': 2160, 'height': 3840},
+              'public_dimensions': {'width': 1200, 'height': 2133},
+              'public_mime_type': 'image/jpeg',
+              'public_path': 'images/ASSET-000340.jpg',
+              'public_url': 'https://cdn.jsdelivr.net/gh/Rauthin/media@main/images/ASSET-000340.jpg',
+              'approved_for': ['website', 'instagram', 'facebook', 'google-business', 'email', 'whatsapp', 'press'],
+              'usage_restrictions': 'Use as a Rauthin estate/Ridgebacks brand image. Do not imply the dogs are a guest amenity or available for interaction.'
+          }, indent=2) + '\n')
+
+          print(f'Generated {output}: {len(data)} bytes, {image.size[0]}x{image.size[1]}')
+          PY
+
+      - name: Remove one-shot deployment workflow
+        run: rm -f .github/workflows/publish-asset-000340.yml
+
+      - name: Commit published asset
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish ASSET-000340 Ridgebacks photograph"
+          git push origin HEAD:publish/asset-000340
