@@ -1,0 +1,235 @@
+{
+  "audit_version": "2026-07-27.2",
+  "generated_at_utc": "2026-07-27T16:06:05.061960+00:00",
+  "repository": "Rauthin/media",
+  "profile": "media",
+  "head_sha": "3da0eb61a781fa5ff102893442b92d54d45a278e",
+  "coverage": {
+    "refs": [
+      "refs/heads/main",
+      "refs/remotes/origin/main",
+      "refs/remotes/origin/publish/asset-000340"
+    ],
+    "ref_count": 3,
+    "commit_count": 8,
+    "unique_blob_count": 7,
+    "text_blob_count": 5,
+    "binary_blob_count": 2,
+    "text_line_count": 444,
+    "coverage_digest": "fb2f1cdc6f4e13cbfeee9c12785ea871f3edefabda3569b68987b4471551bde3",
+    "urls": [
+      "http://(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0",
+      "http://127.0.0.1:${port",
+      "https://cdn.jsdelivr.net/gh/Rauthin/media@main/images/ASSET-000340.jpg"
+    ],
+    "emails": [],
+    "script_ids": []
+  },
+  "head_analysis": {
+    "profile": "media",
+    "file_count": 7,
+    "dependency_files": [],
+    "workflow_count": 1,
+    "workflows": [
+      {
+        "path": ".github/workflows/exhaustive-architecture-audit.yml",
+        "name": "Exhaustive architecture audit",
+        "permissions": {
+          "contents": "write"
+        },
+        "jobs": [
+          "audit"
+        ]
+      }
+    ],
+    "symbol_count": 15,
+    "html_count": 0,
+    "asset_reference_count": 0,
+    "image_count": 2,
+    "apps_script_manifests": [],
+    "script_ids": [],
+    "duplicate_page_groups": [],
+    "duplicate_binary_groups": []
+  },
+  "severity_counts": {
+    "critical": 0,
+    "high": 1,
+    "medium": 17,
+    "low": 0,
+    "info": 1
+  },
+  "finding_count": 19,
+  "findings": [
+    {
+      "severity": "high",
+      "category": "clasp_force_push",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 176,
+      "message": "if \"clasp push --force\" in text: findings.append(Finding(\"high\",\"force_apps_script_deploy\",rel,None,\"Workflow force-pushes Apps Script\").done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "234c4b00467085072f4f"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 17,
+      "message": "except Exception:",
+      "ref": "refs/heads/main",
+      "fingerprint": "6e99d0e30e0253de766f"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 21,
+      "message": "except Exception:",
+      "ref": "refs/heads/main",
+      "fingerprint": "f2292e600e0ee6e9d8d0"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 25,
+      "message": "except Exception:",
+      "ref": "refs/heads/main",
+      "fingerprint": "b890d21cef0cfb484355"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 171,
+      "message": "except Exception as exc: findings.append(Finding(\"high\",\"invalid_workflow_yaml\",rel,None,str(exc)).done()); data={}",
+      "ref": "refs/heads/main",
+      "fingerprint": "8ac1f849310f6d7c11e8"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 185,
+      "message": "except Exception as exc: findings.append(Finding(\"high\",\"python_syntax\",rel,getattr(exc,\"lineno\",None),str(exc)).done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "b981abab85337c01bcc2"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 192,
+      "message": "except Exception as exc: findings.append(Finding(\"high\",\"invalid_appsscript_manifest\",rel,None,str(exc)).done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "5f504c314a8b499147da"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 195,
+      "message": "except Exception as exc: findings.append(Finding(\"high\",\"invalid_json\",rel,None,str(exc)).done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "057bc8e41b1794dce429"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 198,
+      "message": "except Exception: text=\"\"",
+      "ref": "refs/heads/main",
+      "fingerprint": "635a5d5acca5a9c09e24"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 207,
+      "message": "except Exception as exc: findings.append(Finding(\"medium\",\"invalid_jsonld\",rel,getattr(schema,\"sourceline\",None),str(exc)).done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "3cd1135914559eba5ee3"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 230,
+      "message": "except Exception as exc: findings.append(Finding(\"high\",\"invalid_image\",rel,None,str(exc)).done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "ec8a5494648ead0d3933"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 233,
+      "message": "except Exception: pass",
+      "ref": "refs/heads/main",
+      "fingerprint": "d2fc1eeb3f0f99618bc6"
+    },
+    {
+      "severity": "medium",
+      "category": "broad_exception",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 248,
+      "message": "except Exception as exc: findings.append(Finding(\"info\",\"git_fetch_failed\",\".git\",None,str(exc)).done())",
+      "ref": "refs/heads/main",
+      "fingerprint": "c484164692a3e936334f"
+    },
+    {
+      "severity": "medium",
+      "category": "delete_trigger",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 49,
+      "message": "(\"delete_trigger\", re.compile(r\"(?:deleteTrigger|ScriptApp\\.getProjectTriggers)\"), \"medium\"),",
+      "ref": "refs/heads/main",
+      "fingerprint": "5835d6f0204843bb8ddc"
+    },
+    {
+      "severity": "medium",
+      "category": "destructive_sheet_clear",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 48,
+      "message": "(\"destructive_sheet_clear\", re.compile(r\"\\.clear(?:Contents|Format|Notes|DataValidations)?\\s*\\(\"), \"medium\"),",
+      "ref": "refs/heads/main",
+      "fingerprint": "934ee5e07f7f9ca8621c"
+    },
+    {
+      "severity": "medium",
+      "category": "http_url",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 47,
+      "message": "(\"http_url\", re.compile(r\"http://(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)\"), \"medium\"),",
+      "ref": "refs/heads/main",
+      "fingerprint": "e34386ebf850a8a8306b"
+    },
+    {
+      "severity": "medium",
+      "category": "http_url",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 154,
+      "message": "if not value or value.startswith((\"http://\",\"https://\",\"//\",\"data:\",\"mailto:\",\"tel:\",\"javascript:\",\"#\")): return None",
+      "ref": "refs/heads/main",
+      "fingerprint": "99d7e763e5e4596aa9e4"
+    },
+    {
+      "severity": "medium",
+      "category": "self_modifying_workflow",
+      "path": ".github/workflows/exhaustive-architecture-audit.yml",
+      "line": null,
+      "message": "Workflow writes commits to repository",
+      "ref": null,
+      "fingerprint": "2b250d387ca434ec0716"
+    },
+    {
+      "severity": "info",
+      "category": "todo",
+      "path": "audit/exhaustive_code_audit.py",
+      "line": 51,
+      "message": "(\"todo\", re.compile(r\"(?i)\\b(?:TODO|FIXME|HACK|XXX)\\b\"), \"info\"),",
+      "ref": "refs/heads/main",
+      "fingerprint": "ad883ce1dc76a11e14d2"
+    }
+  ]
+}

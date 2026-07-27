@@ -1,0 +1,16 @@
+{
+  "repository": "Rauthin/media",
+  "head_sha": "3da0eb61a781fa5ff102893442b92d54d45a278e",
+  "refs": [
+    "refs/heads/main",
+    "refs/remotes/origin/main",
+    "refs/remotes/origin/publish/asset-000340"
+  ],
+  "ref_count": 3,
+  "commit_count": 8,
+  "unique_blob_count": 7,
+  "text_blob_count": 5,
+  "binary_blob_count": 2,
+  "text_line_count": 444,
+  "coverage_digest": "fb2f1cdc6f4e13cbfeee9c12785ea871f3edefabda3569b68987b4471551bde3"
+}
