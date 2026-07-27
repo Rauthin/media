@@ -1,0 +1,93 @@
+{
+  "status": "COMPLETE",
+  "generated_at_utc": "2026-07-27T16:44:05.198981+00:00",
+  "coverage": {
+    "file_count": 9,
+    "text_line_count": 152,
+    "all_files_hashed": true,
+    "all_text_files_read_line_by_line": true,
+    "all_supported_images_decoded": true
+  },
+  "files": [
+    {
+      "path": ".github/workflows/exhaustive-architecture-audit.yml",
+      "bytes": 2237,
+      "sha256": "e60ea8a1830276dd7fa2e7b48602cd0d7afc520ff05a64a077511db471ccab0f",
+      "extension": ".yml",
+      "lines": 67
+    },
+    {
+      "path": ".github/workflows/full-repository-audit.yml",
+      "bytes": 3074,
+      "sha256": "8b4fceb2b016ca6c781060fea103025881d55e0662545e1d80e5ab03de2a15b5",
+      "extension": ".yml",
+      "lines": 54
+    },
+    {
+      "path": "audit/exhaustive_code_audit.py",
+      "bytes": 21005,
+      "sha256": "497e1a28fbccee3f23ecb1ecd8f476058ff0ac84330130bbb593f5bb3b046606",
+      "extension": ".py"
+    },
+    {
+      "path": "audit/runtime_site_audit.mjs",
+      "bytes": 5157,
+      "sha256": "42163087a5a2e3e471caae0ecdb1524768315e54ad9d443e71fa0415b64ddb32",
+      "extension": ".mjs"
+    },
+    {
+      "path": "audit-requests/exhaustive-audit.txt",
+      "bytes": 38,
+      "sha256": "e604e33a26722015a62c7867829f3c8946f05495f0c7a3e48f2d8f381d116581",
+      "extension": ".txt",
+      "lines": 2
+    },
+    {
+      "path": "deploy/full-repository-audit-request.txt",
+      "bytes": 33,
+      "sha256": "7765a5d8da146494a2f5061d9568624079d7d969069f761c54f64b5032014a7e",
+      "extension": ".txt",
+      "lines": 2
+    },
+    {
+      "path": "images/ASSET-000001.jpg",
+      "bytes": 18114,
+      "sha256": "3cc6aafcd7403d99e1f9a85f27b4e6f560de0ec18f4e33be5e20cecb34cea67f",
+      "extension": ".jpg",
+      "width": 336,
+      "height": 507,
+      "format": "JPEG"
+    },
+    {
+      "path": "images/ASSET-000340.jpg",
+      "bytes": 787441,
+      "sha256": "4e909d820795a1b6408c005f85d722ba1fb63c5ae90c7075acf0ed12ab5cb644",
+      "extension": ".jpg",
+      "width": 1200,
+      "height": 2133,
+      "format": "JPEG"
+    },
+    {
+      "path": "images/ASSET-000340.json",
+      "bytes": 732,
+      "sha256": "4434e759ac1808feeeb2f7fec487c5c78dcfcf8c09013021cd4b796424ddcfc9",
+      "extension": ".json",
+      "lines": 27
+    }
+  ],
+  "invalid_images": [],
+  "image_dimensions": [
+    {
+      "path": "images/ASSET-000001.jpg",
+      "width": 336,
+      "height": 507,
+      "bytes": 18114
+    },
+    {
+      "path": "images/ASSET-000340.jpg",
+      "width": 1200,
+      "height": 2133,
+      "bytes": 787441
+    }
+  ]
+}
