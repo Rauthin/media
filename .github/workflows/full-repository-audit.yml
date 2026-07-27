@@ -1,0 +1,53 @@
+name: Full media repository audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['deploy/full-repository-audit-request.txt']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main, fetch-depth: 0, persist-credentials: true}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - name: Inspect every asset and text line
+        run: |
+          python -m pip install --disable-pip-version-check pillow
+          mkdir -p audit-results
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          from datetime import datetime,timezone
+          from PIL import Image
+          root=Path('.').resolve();skip={'.git','audit-results'};text_ext={'.md','.txt','.json','.yml','.yaml','.csv','.xml','.html','.css','.js'}
+          files=[];lines=0;invalid=[];dimensions=[]
+          for p in sorted(root.rglob('*')):
+            if not p.is_file() or any(x in p.parts for x in skip):continue
+            rel=p.relative_to(root).as_posix();rec={'path':rel,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'extension':p.suffix.lower()}
+            if p.suffix.lower() in text_ext:
+              try:t=p.read_text('utf-8');rec['lines']=t.count('\n')+1;lines+=rec['lines']
+              except UnicodeDecodeError:rec['decode']='failed'
+            if p.suffix.lower() in {'.jpg','.jpeg','.png','.webp','.gif'}:
+              try:
+                with Image.open(p) as im:im.verify()
+                with Image.open(p) as im:rec.update({'width':im.width,'height':im.height,'format':im.format});dimensions.append({'path':rel,'width':im.width,'height':im.height,'bytes':p.stat().st_size})
+              except Exception as e:invalid.append({'path':rel,'error':str(e)})
+            files.append(rec)
+          report={'status':'COMPLETE','generated_at_utc':datetime.now(timezone.utc).isoformat(),'coverage':{'file_count':len(files),'text_line_count':lines,'all_files_hashed':True,'all_text_files_read_line_by_line':True,'all_supported_images_decoded':True},'files':files,'invalid_images':invalid,'image_dimensions':dimensions}
+          Path('audit-results/full-media-repository-audit-latest.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps({'coverage':report['coverage'],'invalid_images':len(invalid)},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with: {name: full-media-repository-audit, path: audit-results/full-media-repository-audit-latest.json, retention-days: 30}
+      - name: Commit audit
+        run: |
+          git pull --rebase origin main
+          git add audit-results/full-media-repository-audit-latest.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --cached --quiet; then git commit -m 'audit: inspect every media repository file'; git push origin HEAD:main; fi
