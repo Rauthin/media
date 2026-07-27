@@ -1,0 +1,66 @@
+name: Exhaustive architecture audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'audit-requests/exhaustive-audit.txt'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: exhaustive-architecture-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install audit dependencies
+        run: python -m pip install --disable-pip-version-check pyyaml beautifulsoup4 pillow
+      - name: Run exhaustive all-ref, all-blob and all-line audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-results/full
+          python audit/exhaustive_code_audit.py --repo . --profile media --out audit-results/full
+      - name: Upload complete audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-exhaustive-audit
+          path: audit-results/full/
+          retention-days: 90
+      - name: Commit compact audit record
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-results/latest
+          cp audit-results/full/report.md audit-results/latest/media-exhaustive-audit.md
+          cp audit-results/full/report.json audit-results/latest/media-exhaustive-audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('audit-results/full/line-coverage.json').read_text())
+          data.pop('blob_records',None)
+          Path('audit-results/latest/media-line-coverage-certificate.json').write_text(json.dumps(data,indent=2)+'\n')
+          PY
+          git pull --rebase origin main
+          git add audit-results/latest
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --cached --quiet; then
+            git commit -m 'audit: record exhaustive media repository review'
+            git push origin HEAD:main
+          fi
